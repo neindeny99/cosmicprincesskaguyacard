@@ -123,7 +123,8 @@ body{
 }
 
 .card-back{
-  background:#1c3a4a;
+  background: black url('cardback/juksun.png') no-repeat center center;
+  background-size: 80% auto; /* 이미지가 카드 안에 충분히 들어가도록 크기 조절 */
 }
 
 .card-front{
@@ -326,7 +327,6 @@ cards.forEach(card=>{
 
   const back=document.createElement("div");
   back.className="card-face card-back";
-  back.textContent="CLICK";
 
   const front=document.createElement("div");
   front.className="card-face card-front";
