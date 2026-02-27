@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>かぐや&月見ヤチヨ</title>
+<title>かぐや&月見ヤ치요</title>
 
 <style>
 *{box-sizing:border-box;}
@@ -16,30 +16,31 @@ body{
   align-items:center;
   min-height:100vh;
   color:white;
+  overflow: hidden;
+}
+
+/* 🔥 Global Standing Image Layer */
+.bg-standing {
+  position: fixed;
+  bottom: -120px; /* 하반신 조금 잘리게 */
+  left: 20px;
+  height: 110vh;
+  z-index: 1; /* wrapper(10)보다 뒤, 배경보다 앞 */
+  filter: drop-shadow(20px 0 30px rgba(0,0,0,0.5));
+  pointer-events: none;
 }
 
 .wrapper{
-  width:1100px;
-  padding:30px;
+  position: relative;
+  z-index: 10;
+  width:850px; /* 스탠딩이 빠져서 가로폭 축소 */
+  margin-left: 350px; /* 왼쪽 스탠딩 공간 확보 */
+  padding:40px;
   background: rgba(21, 26, 38, 0.85);
   border-radius:20px;
   display: flex;
   gap: 30px;
   align-items: center;
-}
-
-.standing-area {
-  flex: 0 0 300px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-.standing-image {
-  max-width: 100%;
-  max-height: 500px;
-  height: auto;
-  filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
 }
 
 .game-area {
@@ -101,7 +102,7 @@ body{
   width: 120px;
   z-index: 100;
   pointer-events: none;
-  display: none; /* Only show when card is open or based on rarity */
+  display: none;
   filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
 }
 
@@ -161,11 +162,10 @@ button{
 
 <body>
 
-<div class="wrapper">
-  <div class="standing-area">
-    <img id="standingImg" class="standing-image" src="" alt="standing">
-  </div>
+<!-- 배경 스탠딩 이미지 -->
+<img id="bgStanding" src="" class="bg-standing" alt="standing">
 
+<div class="wrapper">
   <div class="game-area">
     <div class="card-area">
       <div class="card" data-open="false"></div>
@@ -198,10 +198,10 @@ const STANDING_IMAGES = [
   "standing/2937856005_d77b25e9_98-webp.png"
 ];
 
-// 랜덤 스탠딩 이미지 설정
-const standingImg = document.getElementById("standingImg");
+// 랜덤 스탠딩 이미지 설정 (배경 레이어)
+const bgStanding = document.getElementById("bgStanding");
 const randomStanding = STANDING_IMAGES[Math.floor(Math.random() * STANDING_IMAGES.length)];
-standingImg.src = randomStanding;
+bgStanding.src = randomStanding;
 
 const cards=document.querySelectorAll(".card");
 const draw4Btn=document.getElementById("draw4Btn");
