@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>超ガチャ姫</title>
+<!-- Google Fonts: Noto Serif JP -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box;}
@@ -12,11 +14,31 @@ body{
   background: url('background/KakaoTalk_20260227_144514398.jpg') no-repeat center center fixed;
   background-size: cover;
   display:flex;
+  flex-direction: column;
   justify-content:center;
   align-items:center;
   min-height:100vh;
   color:white;
   overflow: hidden;
+}
+
+/* 🔥 Title Style */
+.title {
+  font-family: "Noto Serif JP", serif;
+  font-size: 72px;
+  font-weight: 700;
+  background: linear-gradient(180deg, #FFD700 0%, #FFB700 40%, #FF8C00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) 
+          drop-shadow(0 0 12px rgba(255,215,0,0.4));
+  letter-spacing: 4px;
+  margin: 0 0 40px 0;
+  text-align: center;
+}
+
+.title span.super {
+  font-size: 1.2em;
 }
 
 /* 🔥 Global Standing Image Layer */
@@ -145,6 +167,8 @@ button{
 </head>
 
 <body>
+
+<h1 class="title"><span class="super">超</span>ガチャ姫</h1>
 
 <!-- 배경 스탠딩 이미지 -->
 <img id="bgStanding" src="" class="bg-standing" alt="standing">
