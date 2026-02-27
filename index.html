@@ -93,6 +93,28 @@ body{
   font-weight:bold;
 }
 
+/* 🔥 Deco Image Effect */
+.card-deco {
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  width: 120px;
+  z-index: 100;
+  pointer-events: none;
+  display: none; /* Only show when card is open or based on rarity */
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
+
+.card[data-open="true"] .card-deco {
+  display: block;
+  animation: decoFadeIn 0.5s ease forwards;
+}
+
+@keyframes decoFadeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* 🔥 SSR 특수 효과 */
 .ssr-effect{
   animation:ssrSpin 0.8s ease forwards,
@@ -196,8 +218,13 @@ cards.forEach(card=>{
   const front=document.createElement("div");
   front.className="card-face card-front";
 
+  const deco = document.createElement("img");
+  deco.className = "card-deco";
+  deco.src = "example/9774.jpg";
+
   inner.appendChild(back);
   inner.appendChild(front);
+  front.appendChild(deco);
   card.appendChild(inner);
 
   card.addEventListener("click",()=>{
