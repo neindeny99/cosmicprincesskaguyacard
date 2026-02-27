@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>かぐや&月見ヤチヨ</title>
+<title>かぐや&月見ヤ치요</title>
 
 <style>
 *{box-sizing:border-box;}
@@ -82,6 +82,7 @@ body{
   justify-content:center;
   flex-direction:column;
   border:2px solid rgba(255,255,255,0.2);
+  overflow: hidden; /* 이미지 넘침 방지 */
 }
 
 .card-back{
@@ -90,8 +91,13 @@ body{
 
 .card-front{
   transform:rotateY(180deg);
-  color:black;
-  font-weight:bold;
+  background: white;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* 🔥 Deco Image Effect */
@@ -182,11 +188,29 @@ button{
 </div>
 
 <script>
+const CARD_IMAGES = {
+  SSR: [
+    "card/ssr/그림10.png", "card/ssr/그림11.png", "card/ssr/그림12.png", 
+    "card/ssr/그림13.png", "card/ssr/그림9.png"
+  ],
+  SR: [
+    "card/sr/2937856005_dbaba665_98-webp.png", "card/sr/2937856005_f61ec4ee_98-webp.png", 
+    "card/sr/fushi.png", "card/sr/inudoge.png"
+  ],
+  R: [
+    "card/r/9786.png", "card/r/그림14.png", "card/r/그림15.png", 
+    "card/r/라이.png", "card/r/미카도.png", "card/r/사카요리모미지.png"
+  ],
+  N: [
+    "card/n/9776.jpg", "card/n/그림6.png", "card/n/그림7.png", "card/n/그림8.png"
+  ]
+};
+
 const CARD_POOL = [
-  {rarity:"SSR", name:"전설의 카드", color:"gold"},
-  {rarity:"SR", name:"고급 카드", color:"#b39ddb"},
-  {rarity:"R", name:"일반 카드", color:"#90caf9"},
-  {rarity:"N", name:"기본 카드", color:"#cfd8dc"}
+  {rarity:"SSR", color:"gold"},
+  {rarity:"SR", color:"#b39ddb"},
+  {rarity:"R", color:"#90caf9"},
+  {rarity:"N", color:"#cfd8dc"}
 ];
 
 const STANDING_IMAGES = [
@@ -235,15 +259,34 @@ cards.forEach(card=>{
 });
 
 function getRandomCard(){
-  return CARD_POOL[Math.floor(Math.random()*CARD_POOL.length)];
+  // 가중치 확률 (SSR: 5%, SR: 15%, R: 30%, N: 50%)
+  const rand = Math.random() * 100;
+  if (rand < 5) return CARD_POOL[0]; // SSR
+  if (rand < 20) return CARD_POOL[1]; // SR
+  if (rand < 50) return CARD_POOL[2]; // R
+  return CARD_POOL[3]; // N
 }
 
 function openCard(card){
   const info=getRandomCard();
   const front=card.querySelector(".card-front");
+  
+  // 해당 등급의 이미지 중 하나 무작위 선택
+  const pool = CARD_IMAGES[info.rarity];
+  const imgUrl = pool[Math.floor(Math.random() * pool.length)];
 
-  front.textContent=info.rarity+" - "+info.name;
-  front.style.background=info.color;
+  // 기존 내용 제거 후 이미지 추가
+  front.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = imgUrl;
+  img.className = "card-image";
+  front.appendChild(img);
+
+  // SSR 장식 이미지 다시 추가 (innerHTML로 날아갔으므로)
+  const deco = document.createElement("img");
+  deco.className = "card-deco";
+  deco.src = "example/9774.jpg";
+  front.appendChild(deco);
 
   card.dataset.open="true";
 
@@ -267,8 +310,7 @@ resetBtn.addEventListener("click",()=>{
   cards.forEach(card=>{
     card.dataset.open="false";
     const front=card.querySelector(".card-front");
-    front.textContent="";
-    front.style.background="";
+    front.innerHTML = "";
     front.classList.remove("ssr-effect");
   });
   updateResetState();
