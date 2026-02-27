@@ -2,12 +2,16 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>超ガチャ姫</title>
 <!-- Google Fonts: Noto Serif JP -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box;}
+:root {
+  --x-offset: clamp(100px, 15vw, 175px); /* 가로 중심 오프셋 (캐릭터 공간 확보용) */
+}
 body{
   margin:0;
   font-family:sans-serif;
@@ -19,13 +23,15 @@ body{
   align-items:center;
   min-height:100vh;
   color:white;
-  overflow: hidden;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  overflow-y: auto;   /* 세로 스크롤 허용 */
+  padding: 20px 10px;
 }
 
 /* 🔥 Title Style */
 .title {
   font-family: "Noto Serif JP", serif;
-  font-size: 160px; /* 160px 크기 */
+  font-size: clamp(3rem, 12vw, 160px); /* 화면 크기에 따라 3rem ~ 160px 자동 조절 */
   font-weight: 700;
   background: linear-gradient(180deg, #FFD700 0%, #FFB700 40%, #FF8C00 100%);
   -webkit-background-clip: text;
@@ -33,14 +39,14 @@ body{
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) 
           drop-shadow(0 0 12px rgba(255,215,0,0.4));
   letter-spacing: 4px;
-  margin: 0;
-  position: relative; /* wrapper와 상대적인 배치를 위해 relative로 변경 */
-  z-index: 100; /* 캐릭터보다 앞으로 배치 */
+  margin: 0 auto 10px auto; /* 중앙 정렬 */
+  position: relative;
+  z-index: 100;
   pointer-events: none;
   white-space: nowrap;
-  align-self: flex-start; /* flex container(body)의 시작 지점(왼쪽)으로 정렬 */
-  margin-left: 1033px; /* game-area 시작 지점에 맞춤 */
-  margin-bottom: -40px; /* game-area 바로 위로 붙이기 위해 음수 마진 적용 */
+  text-align: center;
+  transform: translateX(var(--x-offset)); /* 타이틀 중심 이동 */
+  transition: all 0.5s ease;
 }
 
 .title span.super {
@@ -50,25 +56,28 @@ body{
 /* 🔥 Global Standing Image Layer */
 .bg-standing {
   position: fixed;
-  bottom: -220px; /* 하반신 조금 더 잘리게 */
+  bottom: -15vw; 
   left: 20px;
-  height: 110vh;
-  z-index: 1; /* wrapper(10)보다 뒤, 배경보다 앞 */
+  height: clamp(65vh, 90vw, 110vh); /* 화면 너비에 따른 선형 크기 조절 */
+  z-index: 1; 
   filter: drop-shadow(20px 0 30px rgba(0,0,0,0.5));
   pointer-events: none;
+  transition: all 0.5s ease;
 }
 
 .wrapper{
   position: relative;
   z-index: 10;
-  width:850px; /* 스탠딩이 빠져서 가로폭 축소 */
-  margin-left: 350px; /* 왼쪽 스탠딩 공간 확보 */
+  width:850px; 
+  margin: 0 auto; /* 중앙 정렬 */
+  transform: translateX(var(--x-offset)); /* 게임 영역 중심 이동 (타이틀과 완벽하게 일치) */
   padding:40px;
   background: rgba(21, 26, 38, 0.85);
   border-radius:20px;
   display: flex;
   gap: 30px;
   align-items: center;
+  transition: all 0.5s ease;
 }
 
 .game-area {
@@ -160,6 +169,68 @@ body{
   }
 }
 
+/* 📱 Responsive Design (Method C) */
+
+/* 1. 태블릿 구간 (768px ~ 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --x-offset: 10vw; /* 태블릿용 오프셋 */
+  }
+
+  .bg-standing {
+    left: -10vw; 
+    bottom: -10vw;
+  }
+
+  .wrapper {
+    width: 70%;
+    margin: 0 auto;
+    padding: 25px;
+  }
+
+  .card-area {
+    gap: 15px;
+  }
+}
+
+/* 2. 모바일 구간 (768px 미만) */
+@media (max-width: 768px) {
+  :root {
+    --x-offset: 0; /* 모바일용 오프셋 (완전 중앙) */
+  }
+
+  .bg-standing {
+    left: 50%;
+    transform: translateX(-50%); /* 중앙 배치 */
+    bottom: -10vw;
+    opacity: 0.3; /* 콘텐츠 가독성을 위해 배경화 */
+    z-index: 0;
+  }
+
+  .wrapper {
+    width: 95%; 
+    margin: 20px auto; 
+    padding: 15px;
+    background: rgba(21, 26, 38, 0.9); 
+  }
+
+  .card-area {
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px; 
+  }
+
+  .controls {
+    text-align: center; 
+    margin-top: 15px;
+  }
+
+  button {
+    width: 48%; 
+    padding: 12px 5px;
+    font-size: 14px;
+  }
+}
+
 .controls{
   text-align:right;
 }
@@ -200,8 +271,8 @@ button{
     </div>
 
     <div class="controls">
-      <button id="resetBtn" disabled>초기화</button>
-      <button id="draw4Btn">4장 오픈</button>
+      <button id="resetBtn" disabled>初期化</button>
+      <button id="draw4Btn">4枚オープン</button>
     </div>
   </div>
 </div>
