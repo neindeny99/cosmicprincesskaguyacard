@@ -9,7 +9,8 @@
 body{
   margin:0;
   font-family:sans-serif;
-  background:#0d1016;
+  background: url('background/KakaoTalk_20260227_144514398.jpg') no-repeat center center fixed;
+  background-size: cover;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -18,10 +19,31 @@ body{
 }
 
 .wrapper{
-  width:900px;
+  width:1100px;
   padding:30px;
-  background:#151a26;
+  background: rgba(21, 26, 38, 0.85);
   border-radius:20px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.standing-area {
+  flex: 0 0 300px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.standing-image {
+  max-width: 100%;
+  max-height: 500px;
+  height: auto;
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.5));
+}
+
+.game-area {
+  flex: 1;
 }
 
 .card-area{
@@ -118,16 +140,22 @@ button{
 <body>
 
 <div class="wrapper">
-  <div class="card-area">
-    <div class="card" data-open="false"></div>
-    <div class="card" data-open="false"></div>
-    <div class="card" data-open="false"></div>
-    <div class="card" data-open="false"></div>
+  <div class="standing-area">
+    <img id="standingImg" class="standing-image" src="" alt="standing">
   </div>
 
-  <div class="controls">
-    <button id="resetBtn" disabled>초기화</button>
-    <button id="draw4Btn">4장 오픈</button>
+  <div class="game-area">
+    <div class="card-area">
+      <div class="card" data-open="false"></div>
+      <div class="card" data-open="false"></div>
+      <div class="card" data-open="false"></div>
+      <div class="card" data-open="false"></div>
+    </div>
+
+    <div class="controls">
+      <button id="resetBtn" disabled>초기화</button>
+      <button id="draw4Btn">4장 오픈</button>
+    </div>
   </div>
 </div>
 
@@ -138,6 +166,20 @@ const CARD_POOL = [
   {rarity:"R", name:"일반 카드", color:"#90caf9"},
   {rarity:"N", name:"기본 카드", color:"#cfd8dc"}
 ];
+
+const STANDING_IMAGES = [
+  "standing/2036613928_0b513829__2main.png",
+  "standing/2036613928_902dbacc__1main.png",
+  "standing/2036613928_c0b9b227__0main.png",
+  "standing/2937856005_4586d0fa_98-webp.png",
+  "standing/2937856005_53f442d7_98-webp.png",
+  "standing/2937856005_d77b25e9_98-webp.png"
+];
+
+// 랜덤 스탠딩 이미지 설정
+const standingImg = document.getElementById("standingImg");
+const randomStanding = STANDING_IMAGES[Math.floor(Math.random() * STANDING_IMAGES.length)];
+standingImg.src = randomStanding;
 
 const cards=document.querySelectorAll(".card");
 const draw4Btn=document.getElementById("draw4Btn");
