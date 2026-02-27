@@ -128,24 +128,35 @@ body{
   object-fit: cover;
 }
 
-/* 🔥 SSR 특수 효과 */
+/* 🔥 Rarity Borders */
+.sr-border {
+  border: 5px solid yellow !important;
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.6);
+}
+
+.r-border {
+  border: 5px solid #00BFFF !important;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+}
+
+/* 🔥 SSR 특수 효과: 실행 시간 1.5초 유지하며 일정한 속도로 회전 */
 .ssr-effect{
-  animation:ssrSpin 0.8s ease forwards,
+  border: 5px solid deeppink !important;
+  animation:ssrSpin 1.5s linear forwards,
             ssrGlow 1.5s ease infinite alternate;
 }
 
 @keyframes ssrSpin{
   0%{ transform:rotateY(180deg) scale(0.5); }
-  50%{ transform:rotateY(540deg) scale(1.2); }
-  100%{ transform:rotateY(180deg) scale(1); }
+  100%{ transform:rotateY(1620deg) scale(1); }
 }
 
 @keyframes ssrGlow{
   from{
-    box-shadow:0 0 15px gold, 0 0 30px orange;
+    box-shadow:0 0 15px deeppink, 0 0 30px hotpink;
   }
   to{
-    box-shadow:0 0 35px gold, 0 0 60px orange;
+    box-shadow:0 0 35px deeppink, 0 0 60px hotpink;
   }
 }
 
@@ -273,6 +284,9 @@ function openCard(card){
   const info=getRandomCard();
   const front=card.querySelector(".card-front");
   
+  // 등급별 클래스 제거 (초기화 대비)
+  front.classList.remove("ssr-effect", "sr-border", "r-border");
+
   // 해당 등급의 이미지 중 하나 무작위 선택
   const pool = CARD_IMAGES[info.rarity];
   const imgUrl = pool[Math.floor(Math.random() * pool.length)];
@@ -286,9 +300,13 @@ function openCard(card){
 
   card.dataset.open="true";
 
-  // SSR이면 특수효과 추가
+  // 등급에 따른 테두리/효과 추가
   if(info.rarity==="SSR"){
     front.classList.add("ssr-effect");
+  } else if(info.rarity==="SR"){
+    front.classList.add("sr-border");
+  } else if(info.rarity==="R"){
+    front.classList.add("r-border");
   }
 
   updateResetState();
@@ -307,7 +325,7 @@ resetBtn.addEventListener("click",()=>{
     card.dataset.open="false";
     const front=card.querySelector(".card-front");
     front.innerHTML = "";
-    front.classList.remove("ssr-effect");
+    front.classList.remove("ssr-effect", "sr-border", "r-border");
   });
   updateResetState();
 });
