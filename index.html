@@ -261,11 +261,11 @@ cards.forEach(card=>{
 });
 
 function getRandomCard(){
-  // 가중치 확률 (SSR: 5%, SR: 15%, R: 30%, N: 50%)
+  // 가중치 확률 (SSR: 4%, SR: 12%, R: 24%, N: 60%)
   const rand = Math.random() * 100;
-  if (rand < 5) return CARD_POOL[0]; // SSR
-  if (rand < 20) return CARD_POOL[1]; // SR
-  if (rand < 50) return CARD_POOL[2]; // R
+  if (rand < 4) return CARD_POOL[0]; // SSR
+  if (rand < 16) return CARD_POOL[1]; // SR
+  if (rand < 40) return CARD_POOL[2]; // R
   return CARD_POOL[3]; // N
 }
 
