@@ -25,7 +25,7 @@ body{
 /* 🔥 Title Style */
 .title {
   font-family: "Noto Serif JP", serif;
-  font-size: 160px; /* 160px로 크기 확대 */
+  font-size: 160px; /* 160px 크기 */
   font-weight: 700;
   background: linear-gradient(180deg, #FFD700 0%, #FFB700 40%, #FF8C00 100%);
   -webkit-background-clip: text;
@@ -34,13 +34,13 @@ body{
           drop-shadow(0 0 12px rgba(255,215,0,0.4));
   letter-spacing: 4px;
   margin: 0;
-  padding-left: 0;
-  position: absolute; /* 캐릭터보다 앞으로 오게 하기 위해 absolute 설정 */
-  top: 10%; /* 높이는 그대로 유지하기 위해 top 비율 조정 */
-  left: 1033px; /* game-area 시작 지점(wrapper margin-left)에 맞춤 */
-  z-index: 100; /* 캐릭터(1)와 wrapper(10)보다 앞으로 배치 */
+  position: relative; /* wrapper와 상대적인 배치를 위해 relative로 변경 */
+  z-index: 100; /* 캐릭터보다 앞으로 배치 */
   pointer-events: none;
   white-space: nowrap;
+  align-self: flex-start; /* flex container(body)의 시작 지점(왼쪽)으로 정렬 */
+  margin-left: 1033px; /* game-area 시작 지점에 맞춤 */
+  margin-bottom: -40px; /* game-area 바로 위로 붙이기 위해 음수 마진 적용 */
 }
 
 .title span.super {
@@ -63,7 +63,6 @@ body{
   z-index: 10;
   width:850px; /* 스탠딩이 빠져서 가로폭 축소 */
   margin-left: 350px; /* 왼쪽 스탠딩 공간 확보 */
-  margin-top: 150px; /* 타이틀 공간 확보 */
   padding:40px;
   background: rgba(21, 26, 38, 0.85);
   border-radius:20px;
